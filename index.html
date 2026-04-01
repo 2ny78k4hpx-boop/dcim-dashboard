@@ -3,59 +3,663 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DCIM Dashboard - Datacenters Imopolis</title>
+    <title>DCIM Dashboard - Monitoramento Profissional</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background: #f5f5f5; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
         .container { display: flex; min-height: 100vh; }
-        .sidebar { width: 250px; background: #1a1a2e; color: white; padding: 20px; }
-        .sidebar h1 { font-size: 18px; margin-bottom: 20px; }
-        .tabs-menu { list-style: none; }
-        .tabs-menu li { margin: 10px 0; }
-        .tabs-menu a { color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; cursor: pointer; }
-        .tabs-menu a:hover, .tabs-menu a.ativo { background: #667eea; }
-        .main { flex: 1; padding: 30px; overflow-y: auto; }
-        .header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header h1 { color: #1a1a2e; margin-bottom: 10px; }
-        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid #667eea; }
-        .card-title { font-size: 14px; font-weight: bold; color: #666; margin-bottom: 15px; }
-        .card-values { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .value-box { text-align: center; }
-        .value-box .number { font-size: 24px; font-weight: bold; color: #1a1a2e; }
-        .progress-bar { width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); }
-        .status { font-size: 12px; color: #666; }
-        .chart-wrapper { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .alerts-list { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .alert-item { padding: 12px; margin: 10px 0; border-left: 4px solid #667eea; background: #f9f9f9; border-radius: 4px; }
-        .alert-critical { border-left-color: #dc3545; background: #f8d7da; }
-        .alert-warning { border-left-color: #ffc107; background: #fff3cd; }
-        .content { display: none; }
-        .content.ativo { display: block; }
-        @media (max-width: 768px) { .container { flex-direction: column; } .sidebar { width: 100%; } }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 25px;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #667eea; border-radius: 3px; }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-bottom: 25px;
+        }
+
+        .company-info {
+            font-size: 12px;
+            color: #a0a0b0;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+
+        .tabs-menu {
+            list-style: none;
+        }
+
+        .tabs-menu li {
+            margin: 8px 0;
+        }
+
+        .tabs-menu a {
+            color: #a0a0b0;
+            text-decoration: none;
+            display: block;
+            padding: 14px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .tabs-menu a:hover {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border-left-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .tabs-menu a.ativo {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.3) 0%, transparent 100%);
+            color: white;
+            border-left-color: #667eea;
+            font-weight: bold;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: #f5f5f5;
+        }
+
+        .main::-webkit-scrollbar { width: 8px; }
+        .main::-webkit-scrollbar-thumb { background: #667eea; border-radius: 4px; }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #667eea;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            color: #1a1a2e;
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .header-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .update-time {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .status-badge {
+            background: #d4edda;
+            color: #155724;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* FILTERS */
+        .filters-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            color: #666;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .filter-group select {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-group select:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 2px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* CARDS */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-datacenter {
+            font-size: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .card-values {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-box {
+            text-align: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .value-box label {
+            font-size: 11px;
+            color: #999;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .value-box .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a1a2e;
+            line-height: 1;
+        }
+
+        .value-box small {
+            font-size: 12px;
+            color: #999;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px;
+            transition: width 0.4s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .status-indicator {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .status-ok {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-critical {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* CONTENT TABS */
+        .content {
+            display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        .content.ativo {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CHARTS */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+        }
+
+        .chart-wrapper {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .chart-wrapper h3 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* ALERTS */
+        .alerts-container {
+            display: grid;
+            gap: 15px;
+        }
+
+        .alert-message {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #ddd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .alert-message:hover {
+            transform: translateX(5px);
+        }
+
+        .alert-message h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .alert-message p {
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .alert-message small {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .alert-success {
+            border-left-color: #28a745;
+            background: linear-gradient(90deg, #d4edda 0%, white 100%);
+            color: #155724;
+        }
+
+        .alert-warning {
+            border-left-color: #ffc107;
+            background: linear-gradient(90deg, #fff3cd 0%, white 100%);
+        }
+
+        .alert-danger {
+            border-left-color: #dc3545;
+            background: linear-gradient(90deg, #f8d7da 0%, white 100%);
+            color: #721c24;
+        }
+
+        /* AI INSIGHTS */
+        .ai-insights-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .ai-insights-container h2 {
+            color: #1a1a2e;
+            margin-bottom: 25px;
+            font-size: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ai-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f0f0 100%);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .ai-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .recommendation, .forecast, .trend {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid #667eea;
+            transition: all 0.3s;
+        }
+
+        .recommendation:hover, .forecast:hover, .trend:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+
+        .recommendation p, .forecast p, .trend p {
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* REPORTS */
+        .reports-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .report-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .report-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .report-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-top: 3px solid #667eea;
+        }
+
+        .stat-box .label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .stat-box .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* SETTINGS */
+        .settings-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+        }
+
+        .settings-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 1024px) {
+            .sidebar { width: 220px; }
+            .main { padding: 20px; }
+            .charts-container { grid-template-columns: 1fr; }
+            .card-values { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; max-height: 120px; display: flex; overflow-x: auto; }
+            .logo { margin-bottom: 15px; }
+            .company-info { display: none; }
+            .tabs-menu { display: flex; gap: 10px; }
+            .tabs-menu li { margin: 0; flex-shrink: 0; }
+            .tabs-menu a { padding: 10px 12px; font-size: 12px; }
+            .main { flex: 1; padding: 15px; }
+            .header { padding: 20px; }
+            .header-top { flex-direction: column; }
+            .header h1 { font-size: 24px; }
+            .cards-container { grid-template-columns: 1fr; }
+            .filters-section { flex-direction: column; }
+            .filter-group { width: 100%; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="sidebar">
-            <h1>📊 DCIM</h1>
+            <div class="logo">📊 DCIM</div>
+            <div class="company-info">
+                🏢 Monitoramento<br>
+                Imopolis Datacenters
+            </div>
             <ul class="tabs-menu" id="tabsMenu"></ul>
         </div>
+
         <div class="main">
             <div class="header">
-                <h1 id="pageTitle">Dashboard DCIM</h1>
-                <p id="updateTime">Última atualização: --:--</p>
+                <div class="header-top">
+                    <h1 id="pageTitle">Dashboard DCIM</h1>
+                    <div class="header-info">
+                        <span class="status-badge">✅ Operacional</span>
+                        <span class="update-time" id="updateTime">--:-- --</span>
+                    </div>
+                </div>
+                <div class="filters-section" id="filtersSection"></div>
             </div>
-            <div id="contentArea">⏳ Carregando...</div>
+
+            <div id="contentArea">⏳ Carregando dados...</div>
         </div>
     </div>
 
     <script>
         let config = null;
         let dados = null;
+        let filtroAtivo = 'todos';
 
+        // ==================== CARREGAR DADOS ====================
         async function carregarDados() {
             try {
                 const urlConfig = 'https://raw.githubusercontent.com/2ny78k4hpx-boop/dcim-dashboard/main/config.json';
@@ -64,20 +668,24 @@
                 const respConfig = await fetch(urlConfig);
                 const respDados = await fetch(urlDados);
 
+                if (!respConfig.ok || !respDados.ok) throw new Error('Erro ao carregar arquivos');
+
                 config = await respConfig.json();
                 dados = await respDados.json();
 
                 console.log('✅ Dados carregados!');
                 renderizarAbas();
+                renderizarFiltros();
                 mostrarAba('visao-geral');
                 atualizarHora();
                 setInterval(atualizarHora, 60000);
             } catch (erro) {
                 console.error('❌ Erro:', erro);
-                document.getElementById('contentArea').innerHTML = '❌ Erro ao carregar dados: ' + erro.message;
+                document.getElementById('contentArea').innerHTML = '❌ Erro ao carregar: ' + erro.message;
             }
         }
 
+        // ==================== RENDERIZAR ABAS ====================
         function renderizarAbas() {
             const menu = document.getElementById('tabsMenu');
             menu.innerHTML = '';
@@ -85,144 +693,94 @@
             const abas = [
                 { id: 'visao-geral', nome: '📊 Visão Geral' },
                 { id: 'monitoramento', nome: '📈 Monitoramento' },
-                { id: 'alertas', nome: '🔔 Alertas' }
+                { id: 'alertas', nome: '🔔 Alertas' },
+                { id: 'ia-insights', nome: '🤖 IA Insights' },
+                { id: 'relatorios', nome: '📋 Relatórios' },
+                { id: 'configuracoes', nome: '⚙️ Configurações' }
             ];
 
             abas.forEach(aba => {
                 const li = document.createElement('li');
                 const a = document.createElement('a');
                 a.textContent = aba.nome;
-                a.onclick = () => mostrarAba(aba.id);
                 a.id = 'tab-' + aba.id;
+                a.onclick = () => mostrarAba(aba.id);
                 li.appendChild(a);
                 menu.appendChild(li);
             });
         }
 
+        // ==================== RENDERIZAR FILTROS ====================
+        function renderizarFiltros() {
+            const section = document.getElementById('filtersSection');
+            section.innerHTML = `
+                <div class="filter-group">
+                    <label>Filtrar por Datacenter</label>
+                    <select onchange="aplicarFiltro(this.value)">
+                        <option value="todos">Todos os Datacenters</option>
+                        ${dados.datacenters.map(dc => `<option value="${dc.id}">${dc.nome}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+        }
+
+        function aplicarFiltro(valor) {
+            filtroAtivo = valor;
+            console.log('Filtro aplicado:', valor);
+            mostrarAba('visao-geral');
+        }
+
+        // ==================== MOSTRAR ABA ====================
         function mostrarAba(abaId) {
             document.querySelectorAll('.tabs-menu a').forEach(a => a.classList.remove('ativo'));
             document.getElementById('tab-' + abaId).classList.add('ativo');
 
+            document.getElementById('pageTitle').textContent = {
+                'visao-geral': '📊 Visão Geral',
+                'monitoramento': '📈 Monitoramento',
+                'alertas': '🔔 Alertas',
+                'ia-insights': '🤖 IA Insights',
+                'relatorios': '📋 Relatórios',
+                'configuracoes': '⚙️ Configurações'
+            }[abaId];
+
             const content = document.getElementById('contentArea');
             content.innerHTML = '';
 
-            if (abaId === 'visao-geral') {
-                renderizarVisaoGeral();
-            } else if (abaId === 'monitoramento') {
-                renderizarMonitoramento();
-            } else if (abaId === 'alertas') {
-                renderizarAlertas();
-            }
+            if (abaId === 'visao-geral') renderizarVisaoGeral();
+            else if (abaId === 'monitoramento') renderizarMonitoramento();
+            else if (abaId === 'alertas') renderizarAlertas();
+            else if (abaId === 'ia-insights') renderizarIAInsights();
+            else if (abaId === 'relatorios') renderizarRelatorios();
+            else if (abaId === 'configuracoes') renderizarConfiguracoes();
         }
 
+        // ==================== VISÃO GERAL ====================
         function renderizarVisaoGeral() {
             let html = '<div class="cards-container">';
             
-            dados.datacenters.forEach(dc => {
-                const metricas = dc.metricas;
-                
+            const datacentrosFiltrados = filtroAtivo === 'todos' ? 
+                dados.datacenters : 
+                dados.datacenters.filter(dc => dc.id === filtroAtivo);
+
+            datacentrosFiltrados.forEach(dc => {
+                const m = dc.metricas;
+                const statusClasses = {
+                    'OK': 'status-ok',
+                    'WARNING': 'status-warning',
+                    'CRITICAL': 'status-critical'
+                };
+
                 html += `
                     <div class="card">
-                        <div class="card-title">🏢 ${dc.nome}</div>
+                        <div class="card-header">
+                            <div class="card-title">🏢 ${dc.nome}</div>
+                            <div class="card-datacenter">${dc.id.toUpperCase()}</div>
+                        </div>
+                        
                         <div class="card-values">
                             <div class="value-box">
                                 <label>Espaço</label>
-                                <div class="number">${metricas.espaco.percentual}%</div>
-                            </div>
-                            <div class="value-box">
-                                <label>Energia</label>
-                                <div class="number">${metricas.energia.percentual}%</div>
-                            </div>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${metricas.energia.percentual}%"></div>
-                        </div>
-                        <div class="status">
-                            ${metricas.energia.status === 'OK' ? '✅' : metricas.energia.status === 'WARNING' ? '⚠️' : '❌'} ${metricas.energia.status}
-                        </div>
-                    </div>
-                `;
-            });
-
-            html += '</div>';
-            document.getElementById('contentArea').innerHTML = html;
-        }
-
-        function renderizarMonitoramento() {
-            let html = '<div style="background: white; padding: 20px; border-radius: 8px;">';
-            html += '<h2>📈 Gráficos de Tendência (Últimos 7 Dias)</h2>';
-            html += '<canvas id="chartTendencia" style="margin-top: 20px;"></canvas>';
-            html += '</div>';
-            document.getElementById('contentArea').innerHTML = html;
-
-            setTimeout(() => {
-                const ctx = document.getElementById('chartTendencia').getContext('2d');
-                const dc = dados.datacenters[0];
-                const historico = dc.historico_7_dias;
-
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: historico.map(h => h.data.split('-')[2]),
-                        datasets: [
-                            {
-                                label: 'Energia (kW)',
-                                data: historico.map(h => h.energia_kw),
-                                borderColor: '#f39c12',
-                                backgroundColor: 'rgba(243, 156, 18, 0.1)',
-                                tension: 0.4
-                            },
-                            {
-                                label: 'Climatização (kW)',
-                                data: historico.map(h => h.climatizacao_kw),
-                                borderColor: '#3498db',
-                                backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                                tension: 0.4
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: { legend: { position: 'bottom' } },
-                        scales: { y: { beginAtZero: true } }
-                    }
-                });
-            }, 100);
-        }
-
-        function renderizarAlertas() {
-            let html = '<div class="alerts-list">';
-            
-            let temAlertas = false;
-            dados.datacenters.forEach(dc => {
-                const metricas = dc.metricas;
-                const limiteAlerta = 75;
-                const limiteCritico = 90;
-
-                if (metricas.energia.percentual >= limiteCritico || metricas.climatizacao.percentual >= limiteCritico) {
-                    html += `<div class="alert-item alert-critical">🔴 CRÍTICO: ${dc.nome} ultrapassou 90%</div>`;
-                    temAlertas = true;
-                } else if (metricas.energia.percentual >= limiteAlerta || metricas.climatizacao.percentual >= limiteAlerta) {
-                    html += `<div class="alert-item alert-warning">⚠️ AVISO: ${dc.nome} está acima de 75%</div>`;
-                    temAlertas = true;
-                }
-            });
-
-            if (!temAlertas) {
-                html += '<div class="alert-item" style="border-left-color: #28a745; background: #d4edda;">✅ Tudo operacional</div>';
-            }
-
-            html += '</div>';
-            document.getElementById('contentArea').innerHTML = html;
-        }
-
-        function atualizarHora() {
-            const agora = new Date().toLocaleTimeString('pt-BR');
-            document.getElementById('updateTime').textContent = 'Última atualização: ' + agora;
-        }
-
-        // Iniciar quando página carrega
-        window.addEventListener('DOMContentLoaded', carregarDados);
-    </script>
-</body>
-</html>
+                                <div class="number">${m.espaco.percentual}%</div>
+                                <small`*
+
