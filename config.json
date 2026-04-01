@@ -1,0 +1,17 @@
+{
+  "app": {
+    "nome": "DCIM Dashboard - Monitoramento Imopolis",
+    "versao": "2.0.0",
+    "empresa": "Imopolis"
+  },
+  "datacenters": [
+    { "id": "imopolis-1", "nome": "Imopolis 1" },
+    { "id": "imopolis-2", "nome": "Imopolis 2" },
+    { "id": "norteshopping", "nome": "Norteshopping" },
+    { "id": "riba-ave", "nome": "Riba d'Ave" }
+  ],
+  "limites": {
+    "alerta_amarela": 75,
+    "alerta_vermelha": 90
+  }
+}
