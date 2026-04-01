@@ -4,9 +4,9 @@
       "id": "imopolis-1",
       "nome": "Imopolis 1",
       "metricas": {
-        "espaco": { "percentual": 75, "status": "OK" },
-        "energia": { "percentual": 75, "status": "OK" },
-        "climatizacao": { "percentual": 75, "status": "OK" }
+        "espaco": { "percentual": 75, "unidade": "sqft", "status": "OK" },
+        "energia": { "percentual": 75, "unidade": "kW", "status": "OK" },
+        "climatizacao": { "percentual": 75, "unidade": "kW", "status": "OK" }
       },
       "historico_7_dias": [
         { "data": "2026-03-26", "energia_kw": 35, "climatizacao_kw": 28 },
@@ -22,9 +22,9 @@
       "id": "imopolis-2",
       "nome": "Imopolis 2",
       "metricas": {
-        "espaco": { "percentual": 80, "status": "WARNING" },
-        "energia": { "percentual": 80, "status": "WARNING" },
-        "climatizacao": { "percentual": 80, "status": "WARNING" }
+        "espaco": { "percentual": 80, "unidade": "sqft", "status": "WARNING" },
+        "energia": { "percentual": 80, "unidade": "kW", "status": "WARNING" },
+        "climatizacao": { "percentual": 80, "unidade": "kW", "status": "WARNING" }
       },
       "historico_7_dias": [
         { "data": "2026-03-26", "energia_kw": 50, "climatizacao_kw": 42 },
@@ -40,9 +40,9 @@
       "id": "norteshopping",
       "nome": "Norteshopping",
       "metricas": {
-        "espaco": { "percentual": 85, "status": "CRITICAL" },
-        "energia": { "percentual": 85, "status": "CRITICAL" },
-        "climatizacao": { "percentual": 85, "status": "CRITICAL" }
+        "espaco": { "percentual": 85, "unidade": "sqft", "status": "CRITICAL" },
+        "energia": { "percentual": 85, "unidade": "kW", "status": "CRITICAL" },
+        "climatizacao": { "percentual": 85, "unidade": "kW", "status": "CRITICAL" }
       },
       "historico_7_dias": [
         { "data": "2026-03-26", "energia_kw": 68, "climatizacao_kw": 58 },
@@ -58,9 +58,9 @@
       "id": "riba-ave",
       "nome": "Riba d'Ave",
       "metricas": {
-        "espaco": { "percentual": 70, "status": "OK" },
-        "energia": { "percentual": 70, "status": "OK" },
-        "climatizacao": { "percentual": 70, "status": "OK" }
+        "espaco": { "percentual": 70, "unidade": "sqft", "status": "OK" },
+        "energia": { "percentual": 70, "unidade": "kW", "status": "OK" },
+        "climatizacao": { "percentual": 70, "unidade": "kW", "status": "OK" }
       },
       "historico_7_dias": [
         { "data": "2026-03-26", "energia_kw": 58, "climatizacao_kw": 48 },
