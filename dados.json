@@ -1,0 +1,76 @@
+{
+  "datacenters": [
+    {
+      "id": "imopolis-1",
+      "nome": "Imopolis 1",
+      "metricas": {
+        "espaco": { "percentual": 75, "status": "OK" },
+        "energia": { "percentual": 75, "status": "OK" },
+        "climatizacao": { "percentual": 75, "status": "OK" }
+      },
+      "historico_7_dias": [
+        { "data": "2026-03-26", "energia_kw": 35, "climatizacao_kw": 28 },
+        { "data": "2026-03-27", "energia_kw": 38, "climatizacao_kw": 29 },
+        { "data": "2026-03-28", "energia_kw": 36, "climatizacao_kw": 32 },
+        { "data": "2026-03-29", "energia_kw": 37, "climatizacao_kw": 31 },
+        { "data": "2026-03-30", "energia_kw": 39, "climatizacao_kw": 29 },
+        { "data": "2026-03-31", "energia_kw": 41, "climatizacao_kw": 34 },
+        { "data": "2026-04-01", "energia_kw": 40, "climatizacao_kw": 30 }
+      ]
+    },
+    {
+      "id": "imopolis-2",
+      "nome": "Imopolis 2",
+      "metricas": {
+        "espaco": { "percentual": 80, "status": "WARNING" },
+        "energia": { "percentual": 80, "status": "WARNING" },
+        "climatizacao": { "percentual": 80, "status": "WARNING" }
+      },
+      "historico_7_dias": [
+        { "data": "2026-03-26", "energia_kw": 50, "climatizacao_kw": 42 },
+        { "data": "2026-03-27", "energia_kw": 52, "climatizacao_kw": 43 },
+        { "data": "2026-03-28", "energia_kw": 53, "climatizacao_kw": 44 },
+        { "data": "2026-03-29", "energia_kw": 56, "climatizacao_kw": 46 },
+        { "data": "2026-03-30", "energia_kw": 54, "climatizacao_kw": 43 },
+        { "data": "2026-03-31", "energia_kw": 55, "climatizacao_kw": 45 },
+        { "data": "2026-04-01", "energia_kw": 56, "climatizacao_kw": 46 }
+      ]
+    },
+    {
+      "id": "norteshopping",
+      "nome": "Norteshopping",
+      "metricas": {
+        "espaco": { "percentual": 85, "status": "CRITICAL" },
+        "energia": { "percentual": 85, "status": "CRITICAL" },
+        "climatizacao": { "percentual": 85, "status": "CRITICAL" }
+      },
+      "historico_7_dias": [
+        { "data": "2026-03-26", "energia_kw": 68, "climatizacao_kw": 58 },
+        { "data": "2026-03-27", "energia_kw": 69, "climatizacao_kw": 59 },
+        { "data": "2026-03-28", "energia_kw": 70, "climatizacao_kw": 60 },
+        { "data": "2026-03-29", "energia_kw": 71, "climatizacao_kw": 61 },
+        { "data": "2026-03-30", "energia_kw": 72, "climatizacao_kw": 62 },
+        { "data": "2026-03-31", "energia_kw": 73, "climatizacao_kw": 63 },
+        { "data": "2026-04-01", "energia_kw": 74, "climatizacao_kw": 64 }
+      ]
+    },
+    {
+      "id": "riba-ave",
+      "nome": "Riba d'Ave",
+      "metricas": {
+        "espaco": { "percentual": 70, "status": "OK" },
+        "energia": { "percentual": 70, "status": "OK" },
+        "climatizacao": { "percentual": 70, "status": "OK" }
+      },
+      "historico_7_dias": [
+        { "data": "2026-03-26", "energia_kw": 58, "climatizacao_kw": 48 },
+        { "data": "2026-03-27", "energia_kw": 59, "climatizacao_kw": 49 },
+        { "data": "2026-03-28", "energia_kw": 61, "climatizacao_kw": 50 },
+        { "data": "2026-03-29", "energia_kw": 62, "climatizacao_kw": 51 },
+        { "data": "2026-03-30", "energia_kw": 60, "climatizacao_kw": 50 },
+        { "data": "2026-03-31", "energia_kw": 61, "climatizacao_kw": 52 },
+        { "data": "2026-04-01", "energia_kw": 63, "climatizacao_kw": 51 }
+      ]
+    }
+  ]
+}
